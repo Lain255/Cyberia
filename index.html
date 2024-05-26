@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <p style="position: absolute; display: inline;">Welcome to the home page.</p>
+    <div id="content">
+        <h1>Home</h1>
+        <p>Welcome to the home page.</p>
+        <p><a href="about.php">About</a></p>
+        <marquee>WELCOME TO THE HOME PAGE</marquee>
+        <div>
+            <h2>WebGL Lorenz Attractor</h2>
+            <p>Click on the iframe to interact with the WebGL Lorenz Attractor.</p>
+            <marquee behavior="alternate">CLICK ON THE IFRAME TO INTERACT WITH THE WEBGL LORENZ ATTRACTOR
+                <iframe src="https://lain255.github.io/Lorenze-System-WebGL"></iframe>
+            </marquee>
+           
+        </div>
+        
+    </div>
+    
+</body>
+</html>
+
+<style>
+    html {
+        height: 100vh;
+        width: 100vw;
+
+        font-family: cursive;
+    }
+
+    body {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+
+        background-color: darkslategray;
+        display: flex;
+        justify-content: center;
+    }
+    #content {
+        background-color: gainsboro;
+        width: 70%;
+    }
+    marquee {
+        font-size: 20px;
+        color: red;
+        transform: rotate(10deg);
+    }
+
+</style>
