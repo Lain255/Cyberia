@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<script>
+    function badTime() {
+        alert("I told you not to click the button!");
+        document.getElementById("content").innerHTML = "<h1>Bad Time</h1><p>You have been warned.</p><p><a href='about.php'>About</a></p>" + document.getElementById("content").innerHTML;
+        document.body.style.animation = "spin 10s ease-out infinite";
+    }
+</script>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <iframe src="https://lain255.github.io/Collatz/" width="400px"></iframe>
+    <p style="position: absolute; display: inline;">Welcome to the home page.</p>
+    <div id="content">
+        <h1>Home</h1>
+        <p>Welcome to the home page.</p>
+        <blockquote>
+            <p>“I'm sorry, but I don't want to be an emperor. That's not my business. I don't want to rule or conquer anyone. I should like to help everyone if possible</p>
+            <p>- Albert Einstein</p>
+        </blockquote>
+        <p><a href="about.php">About</a></p>
+        <marquee>WELCOME TO THE HOME PAGE</marquee>
+        <div>
+            <h2>WebGL Lorenz Attractor</h2>
+            <p>Click on the iframe to interact with the WebGL Lorenz Attractor.</p>
+            <marquee behavior="alternate">CLICK ON THE IFRAME TO INTERACT WITH THE WEBGL LORENZ ATTRACTOR
+                <iframe src="https://lain255.github.io/Lorenze-System-WebGL"></iframe>
+            </marquee>
+           
+        </div>
+        <marquee>
+            <img src="https://media.giphy.com/media/3o7TKz9b4v9J21ZKvS/giphy.gif" alt="GIF">
+
+        </marquee>
+        <marquee
+            id="badTimeMarquee"
+            direction="down"
+            width="250"
+            height="200"
+            behavior="alternate"
+            scrollamount="20"
+            style="border:solid">
+            <marquee behavior="alternate" scrollamount="20">This text will bounce
+                <button id="badTime" onclick="badTime()">DO NOT CLICK THIS BUTTON!</button>
+            </marquee>
+        </marquee>
+        
+        
+  
+        
+    </div>
+    
+</body>
+</html>
+
+<style>
+    html {
+        height: 100vh;
+        width: 100vw;
+
+        font-family: cursive;
+    }
+
+    body {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+
+        background-color: darkslategray;
+        display: flex;
+        justify-content: center;
+    }
+    #content {
+        background-color: gainsboro;
+        width: 70%;
+    }
+    marquee:not(#badTimeMarquee, #badTimeMarquee marquee) {
+        font-size: 20px;
+        color: red;
+        transform: rotate(10deg);
+
+        
+    }
+    marquee:hover:not(#badTimeMarquee, #badTimeMarquee marquee) {
+        animation-name: spin;
+        animation-duration: 1s;
+        animation-direction:normal;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+
+    body > div > *:hover:not(#badTime, #badTimeMarquee, #badTimeMarquee marquee) {
+        animation-name: bulb;
+        animation-duration: 1s;
+        animation-direction:alternate;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+
+    }
+    * {
+        animation: rainbow 5s infinite;
+    }
+
+    #badTime {
+ 
+        background-color: red;
+        width: 100px;
+        height: 50px;
+
+        pointer-events: all;
+        
+        
+
+        transform: scale(1,5);
+    }
+    #badTimeMarquee {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 100vh;
+    }
+    #badTimeMarquee,  #badTimeMarquee > marquee {
+        pointer-events: none;
+    }
+
+    @keyframes spin {
+        from {transform: rotate(0turn);}
+        to {transform: rotate(1turn);}
+    }
+    @keyframes bulb {
+        from {transform:scale(1,1);}
+        to {transform: scale(1.5,1.5);}
+    }
+    @keyframes rainbow {
+        0% {color: blue;}
+        25% {color: green;}
+        50% {color: red;}
+        75% {color: purple}
+        100% {color: blue;}
+    }
+
+
+
+
+</style>

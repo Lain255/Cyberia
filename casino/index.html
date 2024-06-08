@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<script>
+    let documentLoad = () => {
+        document.getElementById("money").innerHTML = "Money: $" + money;
+    }
+
+    let money = 1000;
+    let moneyButtonSize = 1;
+    let rollFunc = [
+        () => {
+            money += 100;
+            alert("You won $100!");
+        },
+        () => {
+            money -= 100;
+            alert("You lost $100!");
+        },
+        () => {
+            window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+
+    ];
+
+    let roll = () => {
+        rollFunc[Math.floor(Math.random()*rollFunc.length)]();
+        document.getElementById("money").innerHTML = "Money: $" + money;
+    }
+
+    let buyBiggerButton = () => {
+        if (money >= 100) {
+            money -= 100;
+            rollFunc.push(() => {
+                money += 1000;
+                alert("You won $1000!");
+            });
+            document.getElementById("money").innerHTML = "Money: $" + money;
+            moneyButtonSize++;
+            document.getElementById("moneyButton").style.transform = `scale(${moneyButtonSize},${moneyButtonSize})`;
+        } else {
+            alert("You don't have enough money!");
+        }
+
+    }
+
+</script>
+
+
+<html>
+<head>
+    <title>Casino</title>
+    
+</head>
+<body onload="documentLoad()">
+    <p id="money"></p>
+    <button id="moneyButton" onclick="roll()">
+        Roll at Your Own Risk
+    </button>
+    <button onclick="buyBiggerButton()">
+        Buy Bigger Button $100
+    </button>
+    
+</body>
+</html>
+
+
+<style>
+    button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+</style>
