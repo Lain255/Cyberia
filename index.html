@@ -1,7 +1,20 @@
 <!DOCTYPE html>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var music = document.getElementById("music");
+        music.volume = 0.1;
+        music.addEventListener("ended", function() {
+            music.play();
+        });
+        
+    });
+
+</script>
+
 
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 </head>
 <body>
@@ -18,6 +31,10 @@
     <h1>Future and planning</h1>
     <a href="ideas.html">Ideas</a>
     <a href="inspirations.html">Inspirations</a>
+    
+    <audio id="music" preload="all" controls>
+        <source src="http://lhttp.qingting.fm/live/4804/64k.mp3" type="audio/mp3">
+    </audio>
     
 </body>
 </html>
