@@ -1,10 +1,14 @@
 const http = require('http')
 const fs = require("fs")
-const port = 8081
+const port = 80
 
 // Create a server object:
 const server = http.createServer(function (req, res) {
+    console.log(req.url);
     try {
+        if (req.url == "/") {
+            res.write(fs.readFileSync("./index.html"))
+        }
         res.write(fs.readFileSync(`./${req.url}`));
         res.end();
     }
