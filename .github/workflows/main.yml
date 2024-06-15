@@ -11,6 +11,9 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
+      - name: pull changes
+        run: git pull
+        working-directory: /root/Cyberia
       - name: install dependencies
         run: npm i
         working-directory: /root/Cyberia
