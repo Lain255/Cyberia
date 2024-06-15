@@ -1,6 +1,6 @@
 const http = require('http')
 const fs = require("fs")
-const port = 80
+const port = 8080
 
 // Create a server object:
 const server = http.createServer(function (req, res) {
