@@ -13,7 +13,9 @@ const server = http.createServer(function (req, res) {
         res.end();
     }
     catch (error) {
+        console.log(error)
         res.write("404");
+        res.end();
     }
 })
 
