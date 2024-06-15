@@ -11,8 +11,6 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: change directories
-        run: cd /root/Cyberia
       - name: install dependencies
         run: npm i
       - name: restart service
