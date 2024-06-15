@@ -1,0 +1,21 @@
+name: Deploy
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: change directories
+        run: cd /root/Cyberia
+      - name: install dependencies
+        run: npm i
+      - name: restart service
+        run: systemctl restart Cyberia
+      
+  
