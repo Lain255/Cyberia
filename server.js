@@ -8,7 +8,7 @@ const server = http.createServer(function (req, res) {
     console.log(req.url);
     try {
         if (req.url == "/") {
-            res.write(fs.readFileSync("./index.html"))
+            res.write(fs.readFileSync("./home.html"))
         }
         else {
             res.write(fs.readFileSync(`./${req.url}`));
