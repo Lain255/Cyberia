@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: install dependencies
         run: npm i
+        working-directory: /root/Cyberia
       - name: restart service
         run: systemctl restart Cyberia
-      
-  
+        working-directory: /root/Cyberia
