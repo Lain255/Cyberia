@@ -1,3 +1,4 @@
+
 const http = require('http')
 const fs = require("fs")
 const port = 8080
@@ -9,7 +10,9 @@ const server = http.createServer(function (req, res) {
         if (req.url == "/") {
             res.write(fs.readFileSync("./index.html"))
         }
-        res.write(fs.readFileSync(`./${req.url}`));
+        else {
+            res.write(fs.readFileSync(`./${req.url}`));
+        }
         res.end();
     }
     catch (error) {
