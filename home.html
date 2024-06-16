@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <script>
-    let socket = new WebSocket(`${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.hostname}:8081`);
+    let socket = new WebSocket(window.location.origin);
     socket.onmessage = function(event) {
         console.log(event.data);
     }
@@ -12,6 +12,9 @@
     socket.onclose = function(event) {
         console.log("Connection closed");
     }    
+    socket.onerror = function(event) {
+        console.log("Error: " + event);
+    }
 </script>
 
 <html>

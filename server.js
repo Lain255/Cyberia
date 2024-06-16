@@ -1,30 +1,48 @@
-
-const http = require('http')
 const fs = require("fs")
-const port = 8080
 
 const {WebSocketServer} = require('ws');
-const wss = new WebSocketServer({ port: 8081 });
+const wss = new WebSocketServer({ noServer: true});
+wss.on('connection', function connection(ws) {
+    ws.on('message', function message(data) {
+        console.log('received: %s', data);
+    });
+  
+    ws.send('something');
+});
+  
 
 
 // Create a server object:
+const http = require('http')
+const port = 8080
 const server = http.createServer(function (req, res) {
-    console.log(req.url);
     try {
-        if (req.url == "/") {
+        if (req.url === "/") {
             res.write(fs.readFileSync("./home.html"))
         }
+
         else {
             res.write(fs.readFileSync(`./${req.url}`));
         }
         res.end();
+
+        
     }
     catch (error) {
+        console.log(req.url);
+
         console.log(error)
         res.write("404");
         res.end();
     }
 })
+
+server.on('upgrade', function upgrade(request, socket, head) {
+    console.log('Parsing websocket request...');
+    wss.handleUpgrade(request, socket, head, function done(ws) {
+        wss.emit('connection', ws, request);
+    });
+});
 
 // Set up our server so it will listen on the port
 server.listen(port, function (error) {
@@ -39,11 +57,3 @@ server.listen(port, function (error) {
     }
 })
 
-wss.on('connection', function connection(ws) {
-    ws.on('message', function message(data) {
-        console.log('received: %s', data);
-    });
-  
-    ws.send('something');
-});
-  
