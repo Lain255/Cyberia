@@ -3,6 +3,10 @@ const http = require('http')
 const fs = require("fs")
 const port = 8080
 
+const {WebSocketServer} = require('ws');
+const wss = new WebSocketServer({ port: 8081 });
+
+
 // Create a server object:
 const server = http.createServer(function (req, res) {
     console.log(req.url);
@@ -34,3 +38,12 @@ server.listen(port, function (error) {
         console.log('Server is listening on port' + port);
     }
 })
+
+wss.on('connection', function connection(ws) {
+    ws.on('message', function message(data) {
+        console.log('received: %s', data);
+    });
+  
+    ws.send('something');
+});
+  

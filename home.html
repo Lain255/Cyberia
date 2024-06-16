@@ -1,6 +1,22 @@
 <!DOCTYPE html>
+
+<script>
+    let socket = new WebSocket(`${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.hostname}:8081`);
+    socket.onmessage = function(event) {
+        console.log(event.data);
+    }
+    socket.onopen = function(event) {
+        console.log("Connection established");
+        socket.send("Hello server")
+    }
+    socket.onclose = function(event) {
+        console.log("Connection closed");
+    }    
+</script>
+
 <html>
 <head>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 </head>
