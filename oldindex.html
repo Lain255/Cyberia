@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var music = document.getElementById("music");
+        music.volume = 0.1;
+        music.addEventListener("ended", function() {
+            music.play();
+        });
+        
+    });
+
+</script>
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Home</h1>
+    <p>Welcome to the home page.</p>
+
+    <a href="casino/index.html">Feelin Lucky?</a>
+
+
+
+    <h1>Funzone</h1>
+    <a href="funzone/index.html">Enter the Funzone! DO NOT CLICK THE RED BUTTON</a>
+
+    <h1>Future and planning</h1>
+    <a href="ideas.html">Ideas</a>
+    <a href="inspirations.html">Inspirations</a>
+    
+    <audio id="music" preload="all" controls>
+        <source src="https://lhttp.qingting.fm/live/4804/64k.mp3" type="audio/mp3">
+    </audio>
+    <p>New Text</p>
+
+</body>
+</html>
+
+<style>
+    a {
+        display: block;
+        margin: 10px;
+    }
+</style>

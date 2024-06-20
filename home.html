@@ -2,50 +2,82 @@
 
 <script>
     let socket = new WebSocket(window.location.origin);
-    socket.onmessage = function(event) {
-        console.log(event.data);
+    socket.onmessage = (event) => {
+        try {
+            let data = JSON.parse(event.data);
+
+            
+            let messages = document.getElementById("messages");
+            let message = document.createElement("p");
+            message.innerText = data.message;
+            messages.appendChild(message);
+                
+            console.log(data);
+
+        } catch (error) {
+            console.log("Error parsing JSON: " + error);
+        }
     }
-    socket.onopen = function(event) {
+    socket.onopen = (event) => {
         console.log("Connection established");
-        socket.send("Hello server")
     }
-    socket.onclose = function(event) {
+    socket.onclose = (event) => {
         console.log("Connection closed");
+        location.reload()
     }    
-    socket.onerror = function(event) {
+    socket.onerror = (event) => {
         console.log("Error: " + event);
+    }
+
+
+    let sendMessage = () => {
+        let message = document.getElementById("message").value;
+        socket.send(JSON.stringify({app: "chat", message}));
+        document.getElementById("message").value = "";
     }
 </script>
 
-<html>
-<head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
-    <div class="section">
-        <h1>Home</h1>
-        <p>Welcome to the home page.</p>
-    
-        <p>This site is currently under construction</p>
-    </div>
+ 
+<html>
+    <head> 
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cyberia</title>
+    </head>
+    <body>
+        <div class="section">
+            <h1>Home</h1>
+            <p>Welcome to the home page. </p>
+        
+            <p>This site is currently under construction.</p>
+        </div>
+        <div id="chat" class="section">
+            <h1>Chat</h1>
+            <div id="messages">
+
+            </div>
+            <input type="text" id="message" placeholder="Enter message"></input>
+            <button id="send" onclick="sendMessage()">Send</button>
+        </div>
+    </body>
 
 
 </html>
 
 <style>
     div.section {
-        margin: 10px;
         background-color:antiquewhite;
 
         text-align: center;
         border-radius: 15px;
         width: 50%;
-        margin: auto;
+        min-width: 20em;
+        margin: 10px auto;
         padding: 10px;
 
     }
+
     body {
         background-color:dimgray;
     }

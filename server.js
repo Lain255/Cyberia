@@ -1,16 +1,30 @@
 const fs = require("fs")
 
+
+let chat = [];
+let users = [];
+
+
+
 const {WebSocketServer} = require('ws');
 const wss = new WebSocketServer({ noServer: true});
-wss.on('connection', function connection(ws) {
-    ws.on('message', function message(data) {
-        console.log('received: %s', data);
+wss.on('connection', (ws) => {
+    users.push({socket: ws})
+
+    ws.on('message', (event) => {
+        try {
+            data = JSON.parse(event)
+            chat.push(data)
+            users.forEach(user => {
+            user.socket.send(JSON.stringify(data))
+            console.log(chat)
+        });
+        } catch (error) {
+            console.log(error)
+        }
     });
-  
-    ws.send('something');
 });
   
-
 
 // Create a server object:
 const http = require('http')
