@@ -41,6 +41,9 @@ class User {
         if (fs.existsSync('./users/' + username + '.json')) {
             throw new Error("User already exists")
         }
+        if (username === "guest") {
+            throw new Error("Cannot register as guest")
+        }
         fs.writeFileSync(
             './users/' + username + '.json', 
             JSON.stringify({
@@ -67,7 +70,19 @@ class Chat {
     }
 
     addMessage(user, message) {
-        console.log(user)
+        if (message.length > 1000) {
+            throw new Error("Message too long")
+        }
+        if (message.length < 1) {
+            return
+        }
+
+        if (this.messages.length >= 100) {
+            this.messages.shift()
+        }
+
+
+
         this.messages.push({username: user.username, message})
         this.#subscribedUsers.forEach(_user => {
             _user.send({app: "new message", username: user.username, message})
@@ -88,11 +103,15 @@ let users = []
 
 const wss = new WebSocketServer({ noServer: true});
 wss.on('connection', (ws) => {
-    let user = new User("guest", ws)
+    let user = new User("guest#" + Math.floor(Math.random()*10000).toString().padStart(4,0), ws)
     users.push(user)
     globalChat.subscribe(user)
 
 
+    ws.on('close', () => {
+        console.log("User disconnected")
+        users = users.filter(_user => _user !== user)
+    });
     ws.on('message', (event) => {
         try {
             let data = JSON.parse(event);

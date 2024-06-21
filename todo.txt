@@ -1,0 +1,7 @@
+ > delete user on websocket diconnect to allow user to log in after page refresh
+ > differentiate guests (random four digit id)
+
+ > clear backlog to keep chat lean (<100 messages)
+ > press enter to send message (if message input field selected)
+ > limit message size (<1000)
+ > disable empty message 

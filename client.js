@@ -1,6 +1,8 @@
 let document = globalThis.document;
 
 let socket = new WebSocket(window.location.origin);
+
+
 socket.onmessage = (event) => {
     try { 
         let data = JSON.parse(event.data);
@@ -26,6 +28,10 @@ socket.onmessage = (event) => {
 
         if (data.app === "new message") {
             let messages = document.getElementById("messages");
+            if (messages.children.length >= 100) {
+                messages.removeChild(messages.children[0]);
+            }
+
             let message = document.createElement("p");
             message.innerText = data.username + " : " + data.message;
             messages.appendChild(message);
@@ -53,6 +59,8 @@ socket.onmessage = (event) => {
         console.log("Error parsing JSON: " + error);
     }
 }
+
+
 socket.onopen = (event) => {
     console.log("Connection established");
     getChatHistory();
@@ -89,6 +97,12 @@ let sendMessage = () => {
 let getChatHistory = () => {
     socket.send(JSON.stringify({app: "getchat"}));
 }
+
+let message = document.getElementById("message").addEventListener("keydown", (event) => {   
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
 
 globalThis.sendMessage = sendMessage;
 globalThis.login = login;
