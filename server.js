@@ -59,19 +59,7 @@ class User {
 
 class Chat {
     #subscribedUsers = []
-    messages = [
-        { username: 'Lain', message: 'hello' },
-        { username: 'guest', message: 'hello' },
-        { username: 'guest', message: 'dfsgdfss' },
-        { username: 'guest', message: 'sfgd' },
-        { username: 'guest', message: 'gsdf' },
-        {
-          username: 'guest',
-          message: 'gsdfgsdfgsdfgsdfgsdfgsdfgazd sdfggdsf dfsg sdg fgdfs sd gfgs dfsd fg'
-        },
-        { username: 'guest', message: 'sdf gsdgfdsfgssdfgsdfg' },
-        { username: 'guest', message: 'sdfgsdfgsdfgsdfg' }
-      ]
+    messages = []
     channelName = ""
     constructor(channelName) {
         this.channelName = channelName
