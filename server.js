@@ -1,40 +1,148 @@
-const fs = require("fs")
+import fs from 'fs';
+import {sha256} from 'js-sha256';
+import WebSocket, {WebSocketServer} from 'ws';
+
+class User {
+    username = ""
+    #socket = null
+
+    constructor(username, socket) {
+        this.username = username
+        this.#socket = socket
+    }
+
+    send(data) {
+        this.#socket.send(JSON.stringify(data))
+    }
+    logout() {
+        this.#socket.close()
+    }
+    
+    login(username, password) {
+        console.log("Login attempt: " + username)
+        if (!fs.existsSync('./users/' + username + '.json')) {
+            throw new Error("User does not exist")
+        }
+        let userdata = JSON.parse(fs.readFileSync('./users/' + username + '.json'))
+        if (userdata.password !== sha256([username, password].join(":"))) {
+            throw new Error("Invalid password")
+        }
+        if (users.find(user => user.username === username)) {
+            throw new Error("User already logged in")
+        }
+
+        console.log("Login successful")
+
+        this.username = username
+        this.#socket.send(JSON.stringify({app: "login", success: true}))
+    }
+    
+    register(username, password) {
+        if (fs.existsSync('./users/' + username + '.json')) {
+            throw new Error("User already exists")
+        }
+        fs.writeFileSync(
+            './users/' + username + '.json', 
+            JSON.stringify({
+                username, 
+                password: sha256([username, password].join(":"))
+            })
+        )
+
+        this.username = username        
+        this.#socket.send(JSON.stringify({app: "register", success: true}))
+    } 
+
+}
 
 
-let chat = [];
-let users = [];
+
+class Chat {
+    #subscribedUsers = []
+    messages = [
+        { username: 'Lain', message: 'hello' },
+        { username: 'guest', message: 'hello' },
+        { username: 'guest', message: 'dfsgdfss' },
+        { username: 'guest', message: 'sfgd' },
+        { username: 'guest', message: 'gsdf' },
+        {
+          username: 'guest',
+          message: 'gsdfgsdfgsdfgsdfgsdfgsdfgazd sdfggdsf dfsg sdg fgdfs sd gfgs dfsd fg'
+        },
+        { username: 'guest', message: 'sdf gsdgfdsfgssdfgsdfg' },
+        { username: 'guest', message: 'sdfgsdfgsdfgsdfg' }
+      ]
+    channelName = ""
+    constructor(channelName) {
+        this.channelName = channelName
+
+    }
+
+    addMessage(user, message) {
+        console.log(user)
+        this.messages.push({username: user.username, message})
+        this.#subscribedUsers.forEach(_user => {
+            _user.send({app: "new message", username: user.username, message})
+        });
+        console.log(this.messages)
+    }
+    getMessages(user) {
+        user.send({app: "chat history", messages: this.messages})
+    }
+    subscribe(user) {
+        this.#subscribedUsers.push(user)
+    }
+}
+
+let globalChat = new Chat("global chat")
+let users = []
 
 
-
-const {WebSocketServer} = require('ws');
 const wss = new WebSocketServer({ noServer: true});
 wss.on('connection', (ws) => {
-    users.push({socket: ws})
+    let user = new User("guest", ws)
+    users.push(user)
+    globalChat.subscribe(user)
+
 
     ws.on('message', (event) => {
         try {
-            data = JSON.parse(event)
-            chat.push(data)
-            users.forEach(user => {
-            user.socket.send(JSON.stringify(data))
-            console.log(chat)
-        });
+            let data = JSON.parse(event);
+            console.log(data)
+
+            if (data.app === "login") {
+                user.login(data.username, data.password)
+            }
+            if (data.app === "register") {
+                user.register(data.username, data.password)
+            }
+            if (data.app === "getchat") {
+                globalChat.getMessages(user)
+            }
+            if (data.app === "sendmessage") {
+                globalChat.addMessage(user, data.message)
+            }
+    
         } catch (error) {
-            console.log(error)
+            user.send({app: "error", message: error.message})
         }
     });
 });
   
 
 // Create a server object:
-const http = require('http')
+import http from 'http';
+import { error } from 'console';
 const port = 8080
 const server = http.createServer(function (req, res) {
     try {
+        if (req.url.split(".").at(-1) === "js") {
+            res.setHeader("Content-Type", 'text/javascript');
+        }
+
         if (req.url === "/") {
             res.write(fs.readFileSync("./home.html"))
         }
-
         else {
             res.write(fs.readFileSync(`./${req.url}`));
         }

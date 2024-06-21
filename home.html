@@ -1,42 +1,6 @@
 <!DOCTYPE html>
 
-<script>
-    let socket = new WebSocket(window.location.origin);
-    socket.onmessage = (event) => {
-        try {
-            let data = JSON.parse(event.data);
-
-            
-            let messages = document.getElementById("messages");
-            let message = document.createElement("p");
-            message.innerText = data.message;
-            messages.appendChild(message);
-                
-            console.log(data);
-
-        } catch (error) {
-            console.log("Error parsing JSON: " + error);
-        }
-    }
-    socket.onopen = (event) => {
-        console.log("Connection established");
-    }
-    socket.onclose = (event) => {
-        console.log("Connection closed");
-        location.reload()
-    }    
-    socket.onerror = (event) => {
-        console.log("Error: " + event);
-    }
-
-
-    let sendMessage = () => {
-        let message = document.getElementById("message").value;
-        socket.send(JSON.stringify({app: "chat", message}));
-        document.getElementById("message").value = "";
-    }
-</script>
-
+<script src="client.js" type="module"></script>
 
  
 <html>
@@ -46,39 +10,112 @@
         <title>Cyberia</title>
     </head>
     <body>
-        <div class="section">
-            <h1>Home</h1>
-            <p>Welcome to the home page. </p>
-        
-            <p>This site is currently under construction.</p>
-        </div>
-        <div id="chat" class="section">
-            <h1>Chat</h1>
-            <div id="messages">
-
+        <div class="main-column">
+            <div class="section">
+                <h1>Home</h1>
+                <p>Welcome to the home page. </p>
+            
+                <p>This site is currently under construction.</p>
             </div>
-            <input type="text" id="message" placeholder="Enter message"></input>
-            <button id="send" onclick="sendMessage()">Send</button>
+    
+            <div class="row">
+                <div id="login" class="section">
+                    <h1>Login</h1>
+                    <input type="text" id="login-username" placeholder="Enter username"></input>
+                    <input type="password" id="login-password" placeholder="Enter password"></input>
+                    <button id="login" onclick="login()">Login</button>
+                </div>
+                <div id="register" class="section">
+                    <h1>Register</h1>
+                    <input type="text" id="register-username" placeholder="Enter username"></input>
+                    <input type="password" id="register-password" placeholder="Enter password"></input>
+                    <button id="register" onclick="register()">Register</button>
+                </div>
+        
+    
+            </div>
+           
+            <div id="chat" class="section">
+                <h1>Chat</h1>
+                <div id="messages">
+    
+                </div>
+                <input type="text" id="message" placeholder="Enter message"></input>
+                <button id="send" onclick="sendMessage()">Send</button>
+            </div>
+
         </div>
+        
     </body>
 
 
 </html>
 
 <style>
+    div {
+        box-sizing: border-box;
+    }
     div.section {
         background-color:antiquewhite;
 
         text-align: center;
         border-radius: 15px;
+
+        padding: 10px;
+
+    }
+
+    div.row {
+        display: flex;
+        justify-content: space-around;
+
+        gap: 10px;
+
+        &>div {
+            flex: 1 1 0;
+        }
+    }
+
+    div.main-column {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        gap: 10px;
+
         width: 50%;
         min-width: 20em;
         margin: 10px auto;
-        padding: 10px;
 
+        &>div {
+            width: 100%;
+        }
     }
 
     body {
         background-color:dimgray;
     }
+
+    #chat {
+        /*display: none;*/
+        &>#messages {
+            background-color: white;
+            height: 10em;
+            overflow-y: scroll;
+            &>p {
+                margin: 10px;
+                text-align: start;
+
+            }
+        }
+    }
+
+    #login, #register {
+        &>* {
+            margin: 5px;
+        }
+    }
+
+    
 </style>
