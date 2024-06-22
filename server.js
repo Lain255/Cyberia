@@ -5,6 +5,7 @@ import WebSocket, {WebSocketServer} from 'ws';
 class User {
     username = ""
     #socket = null
+    lastMessage = Date.now()
 
     constructor(username, socket) {
         this.username = username
@@ -70,17 +71,20 @@ class Chat {
     }
 
     addMessage(user, message) {
-        if (message.length > 1000) {
+        if (message.length > 500) {
             throw new Error("Message too long")
         }
         if (message.length < 1) {
             return
         }
+        if (Date.now() - user.lastMessage < 1000) {
+            throw new Error("Message too fast")
+        }
 
+        user.lastMessage = Date.now()
         if (this.messages.length >= 100) {
             this.messages.shift()
         }
-
 
 
         this.messages.push({username: user.username, message})

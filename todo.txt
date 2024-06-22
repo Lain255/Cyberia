@@ -5,3 +5,6 @@
  > press enter to send message (if message input field selected)
  > limit message size (<1000)
  > disable empty message 
+
+ remember user is logged in after refresh
+ > spam filter messages
